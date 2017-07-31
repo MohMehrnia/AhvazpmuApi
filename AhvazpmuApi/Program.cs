@@ -15,6 +15,7 @@ namespace AhvazpmuApi
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://172.16.3.178:5000;http://localhost:5000;http://192.168.137.1:5000")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()

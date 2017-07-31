@@ -4,8 +4,50 @@
              xmlns:local="clr-namespace:AhvazpmuPortable"
              x:Class="AhvazpmuPortable.MainPage">
 
-	<Label Text="Welcome to Xamarin Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
-
+    <ContentPage.Content>
+        <StackLayout>
+            <Image x:Name="imgCarousel" 
+                   Aspect="AspectFill"
+                   HeightRequest="150"/>
+            <ListView x:Name="lvMain"
+                  HorizontalOptions="EndAndExpand"
+                  HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" 
+                                     HorizontalOptions="End">
+                                <StackLayout>
+                                    <Label Text="{Binding fldNewsTitle}"
+                                   TextColor="Black"
+                                   FontSize="Small"
+                                   HorizontalTextAlignment="End"
+                                   HorizontalOptions="End"
+                                   LineBreakMode="WordWrap"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding LongDate}"
+                                           TextColor="White"
+                                           BackgroundColor="DeepSkyBlue"
+                                           HorizontalOptions="Start"
+                                           HorizontalTextAlignment="Start"/>
+                                        <Label Text="{Binding fldRegisterTime}"
+                                           TextColor="White"
+                                           BackgroundColor="LightCoral"
+                                           HorizontalOptions="Start"
+                                           HorizontalTextAlignment="Start"/>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout>
+                                    <Image Source="{Binding ImageUrl}" 
+                                   Aspect="AspectFill"
+                                   WidthRequest="100"
+                                   HeightRequest="100"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

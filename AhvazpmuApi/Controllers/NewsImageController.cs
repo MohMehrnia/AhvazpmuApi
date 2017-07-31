@@ -12,7 +12,7 @@ using AutoMapper;
 namespace AhvazpmuApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/NewsImage")]
+    [Route("NewsImage")]
     public class NewsImageController : Controller
     {
         private IRepository<NewsImage> _Repository;

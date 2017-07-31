@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace AhvazpmuApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/News")]
+    [Route("News")]
     public class NewsController : Controller
     {
         private IRepository<News> _Repository;
@@ -42,6 +42,14 @@ namespace AhvazpmuApi.Controllers
         [HttpPost]
         public IActionResult AddNews([FromBody] NewsDto newsDto)
         {
+            if (newsDto==null)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             News toAdd = Mapper.Map<News>(newsDto);
             _Repository.Add(toAdd);
             bool result = _Repository.Save();
@@ -60,6 +68,11 @@ namespace AhvazpmuApi.Controllers
             if (existingNews == null)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             Mapper.Map(newsDto, existingNews);
@@ -88,7 +101,15 @@ namespace AhvazpmuApi.Controllers
             }
 
             var newsToPatch = Mapper.Map<NewsDto>(existingNews);
-            newsDtoPatchDoc.ApplyTo(newsToPatch);
+            newsDtoPatchDoc.ApplyTo(newsToPatch, ModelState);
+
+            TryValidateModel(newsDtoPatchDoc);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             Mapper.Map(newsToPatch, existingNews);
             _Repository.Update(existingNews);
             bool result = _Repository.Save();
@@ -108,7 +129,6 @@ namespace AhvazpmuApi.Controllers
             {
                 return NotFound();
             }
-
             _Repository.Delete(existingNews);
             bool result = _Repository.Save();
             if (!result)

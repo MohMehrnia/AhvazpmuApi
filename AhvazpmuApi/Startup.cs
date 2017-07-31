@@ -37,6 +37,10 @@ namespace AhvazpmuApi
             services.AddDbContext<AhvazpmuDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConncetion")));
             services.AddScoped<IRepository<News>, NewsRepository>();
             services.AddScoped<IRepository<NewsImage>, NewsImageRepository>();
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title="Ahvazpmu Web Api", Version="1.0" });
+            });
             services.AddMvc();
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();
@@ -47,7 +51,12 @@ namespace AhvazpmuApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "Ahvazpmu Web Api");
+            });
             AutoMapper.Mapper.Initialize(mapper =>
             {
                 mapper.CreateMap<News, NewsDto>().ReverseMap();

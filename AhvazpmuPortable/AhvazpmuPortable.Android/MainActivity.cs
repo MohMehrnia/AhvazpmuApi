@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Forms.Platform;
 
 namespace AhvazpmuPortable.Droid
 {
@@ -19,7 +20,7 @@ namespace AhvazpmuPortable.Droid
 
             base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+            Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }
     }
