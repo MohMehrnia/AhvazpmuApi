@@ -12,6 +12,7 @@ namespace AhvazpmuApi.Entities
     {
         public Guid tbNewsID { get; set; }
         public Guid tbNewsGroupID { get; set; }
+        public Guid tbUserID { get; set; }
         public string fldNewsTitle { get; set; }
         public string fldNewsDescription { get; set; }
         public string fldNewsDate { get; set; }

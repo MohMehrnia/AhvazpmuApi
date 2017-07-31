@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AhvazpmuApi.Entities;
 using AhvazpmuApi.Repositories;
+using AhvazpmuApi.Dtos;
+using AutoMapper;
 
 namespace AhvazpmuApi.Controllers
 {
@@ -18,10 +20,31 @@ namespace AhvazpmuApi.Controllers
         {
             _Repository = Repository;
         }
-        [HttpGet("{id}")]
+
+        [HttpGet]
+        [Route("{id}", Name = "GetSingleNewsImage")]
         public IActionResult GetNewsImage(Guid id)
         {
-            return Ok(_Repository.GetSingle(q=>q.tbNewsID==id).fldSmallImage);
+            NewsImageDto newsImageRepo = Mapper.Map<NewsImageDto>(_Repository.GetSingle(q => q.tbNewsID == id));
+            if (newsImageRepo == null)
+            {
+                return NotFound();
+            }
+            return File(newsImageRepo.fldSmallImage,"image/jpeg");
+        }
+
+        [HttpPost]
+        public IActionResult AddNewsImage([FromBody] NewsImageDto newsImage)
+        {
+            NewsImage toAdd = Mapper.Map<NewsImage>(newsImage);
+            _Repository.Add(toAdd);
+            bool result = _Repository.Save();
+            if (!result)
+            {
+                return new StatusCodeResult(500);
+            }
+            //return Ok(Mapper.Map<NewsImageDto>(toAdd));
+            return CreatedAtRoute("GetSingleNewsImage", new { id = toAdd.tbNewsID }, Mapper.Map<NewsImageDto>(toAdd));
         }
     }
 }
