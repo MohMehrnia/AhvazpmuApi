@@ -30,7 +30,7 @@ namespace AhvazpmuApi.Controllers
             {
                 return NotFound();
             }
-            return File(newsImageRepo.fldSmallImage,"image/jpeg");
+            return File(newsImageRepo.fldLargImage,"image/jpeg");
         }
 
         [HttpPost]
@@ -43,7 +43,6 @@ namespace AhvazpmuApi.Controllers
             {
                 return new StatusCodeResult(500);
             }
-            //return Ok(Mapper.Map<NewsImageDto>(toAdd));
             return CreatedAtRoute("GetSingleNewsImage", new { id = toAdd.tbNewsID }, Mapper.Map<NewsImageDto>(toAdd));
         }
     }

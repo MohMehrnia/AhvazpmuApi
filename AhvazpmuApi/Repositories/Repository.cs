@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AhvazpmuApi.Entities;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using AhvazpmuApi.QueryParameters;
 
 namespace AhvazpmuApi.Repositories
 {
@@ -23,9 +24,11 @@ namespace AhvazpmuApi.Repositories
         {
             _context.Set<T>().Remove(item);
         }
-        public virtual IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll(NewsQueryParameters newsQueryParameters)
         {
-            return _context.Set<T>();
+            return _context.Set<T>()
+                .Skip(newsQueryParameters.PageCount * (newsQueryParameters.Page - 1))
+                .Take(newsQueryParameters.PageCount);
         }
         public T GetSingle(Expression<Func<T, bool>> predicate)
         {
@@ -38,6 +41,11 @@ namespace AhvazpmuApi.Repositories
         public virtual void Update(T item)
         {
             _context.Entry(item).State = EntityState.Modified;
+        }
+
+        public virtual int Count()
+        {
+            return _context.Set<T>().Count();
         }
     }
 }

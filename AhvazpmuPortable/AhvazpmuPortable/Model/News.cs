@@ -28,6 +28,13 @@ namespace AhvazpmuPortable.Model
             }
         }
         public string LongDate { get; set; }
+        public string fldFullDate
+        {
+            get
+            {
+                return LongDate + "  " + fldRegisterTime; 
+            }
+        }
 
     }
 }

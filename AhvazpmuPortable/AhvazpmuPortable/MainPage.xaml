@@ -6,44 +6,64 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Image x:Name="imgCarousel" 
-                   Aspect="AspectFill"
-                   HeightRequest="150"/>
+            <Grid HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="imgCarousel" 
+                       Aspect="AspectFill"
+                       HeightRequest="180"
+                       Grid.Row="0"
+                       Grid.Column="0"/>
+                <ActivityIndicator x:Name="activityIndicator"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Color="Blue"
+                                   Grid.Row="0"
+                                   Grid.Column="0"/>
+            </Grid>
             <ListView x:Name="lvMain"
-                  HorizontalOptions="EndAndExpand"
-                  HasUnevenRows="True">
+                      HorizontalOptions="EndAndExpand"
+                      HasUnevenRows="True"
+                      ItemAppearing="lvMain_ItemAppearing"
+                      SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" 
-                                     HorizontalOptions="End">
-                                <StackLayout>
-                                    <Label Text="{Binding fldNewsTitle}"
-                                   TextColor="Black"
-                                   FontSize="Small"
-                                   HorizontalTextAlignment="End"
-                                   HorizontalOptions="End"
-                                   LineBreakMode="WordWrap"/>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding LongDate}"
-                                           TextColor="White"
-                                           BackgroundColor="DeepSkyBlue"
-                                           HorizontalOptions="Start"
-                                           HorizontalTextAlignment="Start"/>
-                                        <Label Text="{Binding fldRegisterTime}"
-                                           TextColor="White"
-                                           BackgroundColor="LightCoral"
-                                           HorizontalOptions="Start"
-                                           HorizontalTextAlignment="Start"/>
-                                    </StackLayout>
-                                </StackLayout>
-                                <StackLayout>
-                                    <Image Source="{Binding ImageUrl}" 
-                                   Aspect="AspectFill"
-                                   WidthRequest="100"
-                                   HeightRequest="100"/>
-                                </StackLayout>
-                            </StackLayout>
+                            <Frame Padding="5,5,5,5" 
+                                   Margin="3,3,3,3"
+                                   BackgroundColor="#0d47a1">
+                                <Frame.Content>
+                                    <Frame Padding="3,3,3,3" OutlineColor="Gray" BackgroundColor="White">
+                                        <Frame.Content>
+                                            <StackLayout Orientation="Horizontal"
+                                                         HorizontalOptions="EndAndExpand">
+                                                <StackLayout HorizontalOptions="CenterAndExpand">
+                                                    <Label Text="{Binding fldNewsTitle}"                                       
+                                                           HorizontalTextAlignment="End"
+                                                           HorizontalOptions="EndAndExpand"
+                                                           TextColor="Black"
+                                                           FontSize="Small"/>
+                                                    <Label Text="{Binding fldFullDate}"
+                                                           HorizontalTextAlignment="End"
+                                                           HorizontalOptions="EndAndExpand"
+                                                           BackgroundColor="#e3f2fd"/>
+                                                </StackLayout>
+                                                <StackLayout HorizontalOptions="EndAndExpand">
+                                                    <Image Source="{Binding ImageUrl}" 
+                                                           Aspect="AspectFill"
+                                                           WidthRequest="100"
+                                                           HeightRequest="100"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </Frame.Content>
+                                    </Frame>
+                                </Frame.Content>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

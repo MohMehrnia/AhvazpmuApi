@@ -16,7 +16,9 @@ namespace AhvazpmuPortable
     {
         private const string Url = "http://api.ahvazpmu.ir/news";
         private HttpClient _client = new HttpClient();
-        private ObservableCollection<News> _news;
+        private ObservableCollection<News> _Selectednews;
+        private int PageIndex = 1;
+        private int itemCount = 6;
         public MainPage()
         {
             InitializeComponent();
@@ -26,11 +28,14 @@ namespace AhvazpmuPortable
         {
             base.OnAppearing();
 
-            var content = await _client.GetStringAsync(Url);
-            var news = JsonConvert.DeserializeObject<List<News>>(content);
-            _news = new ObservableCollection<News>(news);
+            activityIndicator.IsVisible = true;
+            activityIndicator.IsRunning = true;
 
-            lvMain.ItemsSource = _news.Skip(1).Take(10);
+            var content = await _client.GetStringAsync(Url + "?Page="+PageIndex.ToString()+"&PageCount="+itemCount.ToString());
+            var news = JsonConvert.DeserializeObject<List<News>>(content);
+            _Selectednews = new ObservableCollection<News>(news.OrderByDescending(q=>Convert.ToDateTime(q.fldRegisterDate)));
+
+            lvMain.ItemsSource = _Selectednews;
 
             Device.StartTimer(TimeSpan.FromSeconds(4), () =>
             {
@@ -39,12 +44,34 @@ namespace AhvazpmuPortable
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Random rand = new Random();
-                        int toSkip = rand.Next(0, 10);
-                        imgCarousel.Source = _news.Skip(toSkip).Take(1).FirstOrDefault().ImageUrl;
+                        int toSkip = rand.Next(0, 6);
+                        imgCarousel.Source = _Selectednews.Skip(toSkip).Take(1).FirstOrDefault().ImageUrl;
                     });
                 });
                 return true;
             });
+
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+        }
+
+        private async void lvMain_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+            if (e.Item!=null && (e.Item as News).tbNewsID.ToString()== _Selectednews[_Selectednews.Count-1].tbNewsID.ToString())
+            {
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+
+                PageIndex++;
+                var content = await _client.GetStringAsync(Url + "?Page=" + PageIndex.ToString() + "&PageCount=" + itemCount.ToString());
+                var _newItems = JsonConvert.DeserializeObject<List<News>>(content);
+                foreach(News item in _newItems)
+                {
+                    _Selectednews.Add(item);
+                }
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+            }
         }
     }
 }

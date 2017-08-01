@@ -1,9 +1,11 @@
 ﻿using AhvazpmuApi.Dtos;
 using AhvazpmuApi.Entities;
+using AhvazpmuApi.QueryParameters;
 using AhvazpmuApi.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,10 @@ namespace AhvazpmuApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllNews()
+        public IActionResult GetAllNews(NewsQueryParameters newsQueryParameters)
         {
-            return Ok(_Repository.GetAll().ToList().Select(x => Mapper.Map<NewsDto>(x)));
+            Response.Headers.Add("X-Pagination",JsonConvert.SerializeObject(new { totalCount = _Repository.Count() }));
+            return Ok(_Repository.GetAll(newsQueryParameters).ToList().Select(x => Mapper.Map<NewsDto>(x)));
         }
 
         [HttpGet]

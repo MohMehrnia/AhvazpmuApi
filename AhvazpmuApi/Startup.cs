@@ -34,7 +34,9 @@ namespace AhvazpmuApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<AhvazpmuDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConncetion")));
+            services.AddDbContext<AhvazpmuDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConncetion"), 
+                opt =>opt.UseRowNumberForPaging()));
             services.AddScoped<IRepository<News>, NewsRepository>();
             services.AddScoped<IRepository<NewsImage>, NewsImageRepository>();
             services.AddSwaggerGen(config =>
