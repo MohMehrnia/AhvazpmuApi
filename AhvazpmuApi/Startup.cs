@@ -62,6 +62,7 @@ namespace AhvazpmuApi
             AutoMapper.Mapper.Initialize(mapper =>
             {
                 mapper.CreateMap<News, NewsDto>().ReverseMap();
+                mapper.CreateMap<News, NewsDetailDto>().ReverseMap();
                 mapper.CreateMap<NewsImage, NewsImageDto>().ReverseMap();
             });
             app.UseResponseCompression();

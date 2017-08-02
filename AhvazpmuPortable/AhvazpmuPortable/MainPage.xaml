@@ -2,20 +2,24 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AhvazpmuPortable"
-             x:Class="AhvazpmuPortable.MainPage">
+             xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+             x:Class="AhvazpmuPortable.MainPage"
+             Title="مرکز آموزش عالی لوله سازی">
 
     <ContentPage.Content>
         <StackLayout>
             <Grid HorizontalOptions="Center"
                   VerticalOptions="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image x:Name="imgCarousel" 
-                       Aspect="AspectFill"
+                       Aspect="Fill"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"
                        HeightRequest="180"
                        Grid.Row="0"
                        Grid.Column="0"/>
@@ -29,45 +33,45 @@
             <ListView x:Name="lvMain"
                       HorizontalOptions="EndAndExpand"
                       HasUnevenRows="True"
-                      ItemAppearing="lvMain_ItemAppearing"
-                      SeparatorVisibility="None">
+                      SeparatorVisibility="None"
+                      ItemTapped="lvMain_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Frame Padding="5,5,5,5" 
                                    Margin="3,3,3,3"
-                                   BackgroundColor="#0d47a1">
+                                   OutlineColor="Gray"
+                                   BackgroundColor="White">
                                 <Frame.Content>
-                                    <Frame Padding="3,3,3,3" OutlineColor="Gray" BackgroundColor="White">
-                                        <Frame.Content>
-                                            <StackLayout Orientation="Horizontal"
-                                                         HorizontalOptions="EndAndExpand">
-                                                <StackLayout HorizontalOptions="CenterAndExpand">
-                                                    <Label Text="{Binding fldNewsTitle}"                                       
-                                                           HorizontalTextAlignment="End"
-                                                           HorizontalOptions="EndAndExpand"
-                                                           TextColor="Black"
-                                                           FontSize="Small"/>
-                                                    <Label Text="{Binding fldFullDate}"
-                                                           HorizontalTextAlignment="End"
-                                                           HorizontalOptions="EndAndExpand"
-                                                           BackgroundColor="#e3f2fd"/>
-                                                </StackLayout>
-                                                <StackLayout HorizontalOptions="EndAndExpand">
-                                                    <Image Source="{Binding ImageUrl}" 
-                                                           Aspect="AspectFill"
-                                                           WidthRequest="100"
-                                                           HeightRequest="100"/>
-                                                </StackLayout>
-                                            </StackLayout>
-                                        </Frame.Content>
-                                    </Frame>
+                                    <StackLayout Orientation="Horizontal"
+                                                 HorizontalOptions="EndAndExpand">
+                                        <StackLayout HorizontalOptions="CenterAndExpand">
+                                            <Label Text="{Binding fldNewsTitle}"                                       
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   TextColor="Black"
+                                                   FontSize="Small"/>
+                                            <Label Text="{Binding fldFullDate}"
+                                                   HorizontalTextAlignment="End"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   BackgroundColor="#e3f2fd"/>
+                                        </StackLayout>
+                                        <StackLayout HorizontalOptions="EndAndExpand">
+                                            <Image Source="{Binding ImageUrl}" 
+                                                   Aspect="AspectFill"
+                                                   WidthRequest="100"
+                                                   HeightRequest="100"/>
+                                        </StackLayout>
+                                    </StackLayout>
                                 </Frame.Content>
                             </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="btnMoreNews" 
+                    Text="اخبار بیشتر"
+                    Clicked="btnMoreNews_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

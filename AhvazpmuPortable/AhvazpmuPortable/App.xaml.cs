@@ -18,7 +18,7 @@ namespace AhvazpmuPortable
         {
             InitializeComponent();
 
-            MainPage = new AhvazpmuPortable.MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

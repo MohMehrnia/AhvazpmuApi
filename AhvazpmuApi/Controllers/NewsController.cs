@@ -27,7 +27,7 @@ namespace AhvazpmuApi.Controllers
         public IActionResult GetAllNews(NewsQueryParameters newsQueryParameters)
         {
             Response.Headers.Add("X-Pagination",JsonConvert.SerializeObject(new { totalCount = _Repository.Count() }));
-            return Ok(_Repository.GetAll(newsQueryParameters).ToList().Select(x => Mapper.Map<NewsDto>(x)));
+            return Ok(_Repository.GetAll(newsQueryParameters, q=>Convert.ToDateTime(q.fldRegisterDate)).ToList().Select(x => Mapper.Map<NewsDto>(x)));
         }
 
         [HttpGet]

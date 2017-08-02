@@ -20,7 +20,6 @@ namespace AhvazpmuApi.Dtos
         [Required]
         [MaxLength(1000)]
         public string fldNewsTitle { get; set; }
-
         public string fldNewsDate { get; set; }
         public string fldRegisterDate { get; set; }
         public long? fldNewsVisited { get; set; }

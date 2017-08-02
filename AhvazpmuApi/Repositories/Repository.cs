@@ -24,9 +24,10 @@ namespace AhvazpmuApi.Repositories
         {
             _context.Set<T>().Remove(item);
         }
-        public virtual IQueryable<T> GetAll(NewsQueryParameters newsQueryParameters)
+        public virtual IQueryable<T> GetAll<TOrderBy>(NewsQueryParameters newsQueryParameters, Expression<Func<T, TOrderBy>> orderBy)
         {
             return _context.Set<T>()
+                .OrderByDescending(orderBy)
                 .Skip(newsQueryParameters.PageCount * (newsQueryParameters.Page - 1))
                 .Take(newsQueryParameters.PageCount);
         }
