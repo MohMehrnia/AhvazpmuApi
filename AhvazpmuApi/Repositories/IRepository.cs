@@ -10,7 +10,9 @@ namespace AhvazpmuApi.Repositories
     {
         void Add(T item);
         void Delete(T item);
-        IQueryable<T> GetAll<TOrderBy>(NewsQueryParameters newsQueryParameters, Expression<Func<T, TOrderBy>> orderBy);
+        IQueryable<T> GetAll<TOrderBy>(NewsQueryParameters newsQueryParameters, 
+                                       Expression<Func<T, TOrderBy>> orderBy,
+                                       Expression<Func<T, bool>> predice);
         T GetSingle(Expression<Func<T, bool>> predicate);
         bool Save();
         int Count();

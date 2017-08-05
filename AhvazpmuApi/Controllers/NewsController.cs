@@ -26,8 +26,13 @@ namespace AhvazpmuApi.Controllers
         [HttpGet]
         public IActionResult GetAllNews(NewsQueryParameters newsQueryParameters)
         {
+            Guid[] NewsGroupIDs = new Guid[] { new Guid("90AF0708-3307-42FC-99A4-666127BAD951"),
+                                               new Guid("E5945A67-094F-4270-A601-ABB790D38C7B"),
+                                               new Guid("95F3AF38-19D5-4042-902B-C0127AE9DE89") };
             Response.Headers.Add("X-Pagination",JsonConvert.SerializeObject(new { totalCount = _Repository.Count() }));
-            return Ok(_Repository.GetAll(newsQueryParameters, q=>Convert.ToDateTime(q.fldRegisterDate)).ToList().Select(x => Mapper.Map<NewsDto>(x)));
+            return Ok(_Repository.GetAll(newsQueryParameters, 
+                                         q=>Convert.ToDateTime(q.fldRegisterDate), 
+                                         q=>NewsGroupIDs.Contains(q.tbNewsGroupID)).ToList().Select(x => Mapper.Map<NewsDto>(x)));
         }
 
         [HttpGet]

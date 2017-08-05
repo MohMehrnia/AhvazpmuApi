@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -36,15 +37,13 @@ namespace AhvazpmuPortable
 
                 var content = await _client.GetStringAsync(Url + "?Page=" + PageIndex.ToString() + "&PageCount=" + itemCount.ToString());
                 var news = JsonConvert.DeserializeObject<List<News>>(content);
-                _Selectednews = new ObservableCollection<News>(news.OrderByDescending(q => Convert.ToDateTime(q.fldRegisterDate)));
+                _Selectednews = new ObservableCollection<News>(news.OrderByDescending(q => Convert.ToDateTime(q.fldRegisterDate, new CultureInfo("en-US"))));
 
-                Device.BeginInvokeOnMainThread(async () =>
+                Device.BeginInvokeOnMainThread(() =>
                 {
                     Random rand = new Random();
                     int toSkip = rand.Next(0, 6);
-                    await imgCarousel.FadeTo(0, 100);
                     imgCarousel.Source = _Selectednews.Skip(toSkip).Take(1).FirstOrDefault().ImageUrl;
-                    await imgCarousel.FadeTo(1, 100);
                 });
 
                 lvMain.ItemsSource = _Selectednews;
@@ -52,13 +51,11 @@ namespace AhvazpmuPortable
                 {
                     Task.Factory.StartNew(() =>
                     {
-                        Device.BeginInvokeOnMainThread(async () =>
+                        Device.BeginInvokeOnMainThread(() =>
                         {
                             Random rand = new Random();
                             int toSkip = rand.Next(0, 6);
-                            await imgCarousel.FadeTo(0, 1000);
                             imgCarousel.Source = _Selectednews.Skip(toSkip).Take(1).FirstOrDefault().ImageUrl;
-                            await imgCarousel.FadeTo(1, 1000);
                         });
                     });
                     return !StopTimer;
