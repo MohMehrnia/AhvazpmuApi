@@ -35,7 +35,7 @@ namespace AhvazpmuPortable
                 activityIndicator.IsVisible = true;
                 activityIndicator.IsRunning = true;
 
-                var content = await _client.GetStringAsync(Url + "?Page=" + PageIndex.ToString() + "&PageCount=" + itemCount.ToString());
+                var content = await _client.GetStringAsync(Url + "?Page=" + PageIndex.ToString() + "&PageCount=" + itemCount.ToString());                
                 var news = JsonConvert.DeserializeObject<List<News>>(content);
                 _Selectednews = new ObservableCollection<News>(news.OrderByDescending(q => Convert.ToDateTime(q.fldRegisterDate, new CultureInfo("en-US"))));
 
@@ -84,6 +84,21 @@ namespace AhvazpmuPortable
             {
                 _Selectednews.Add(item);
             }
+
+            Device.StartTimer(TimeSpan.FromSeconds(6), () =>
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Random rand = new Random();
+                        int toSkip = rand.Next(0, 6);
+                        imgCarousel.Source = _Selectednews.Skip(toSkip).Take(1).FirstOrDefault().ImageUrl;
+                    });
+                });
+                return !StopTimer;
+            });
+
             activityIndicator.IsVisible = false;
             activityIndicator.IsRunning = false;
         }
